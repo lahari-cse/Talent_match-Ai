@@ -6,7 +6,7 @@ const getProfile = async (req, res) => {
       { user: req.user.id },
       { $setOnInsert: { user: req.user.id } },
       { new: true, upsert: true }
-    );
+    ).select('-resumeData');
     res.json(profile);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -29,7 +29,7 @@ const updateProfile = async (req, res) => {
       { user: req.user.id },
       { $set: updateData },
       { new: true, upsert: true }
-    );
+    ).select('-resumeData');
 
     res.json(profile);
   } catch (error) {
@@ -41,7 +41,7 @@ const getAllProfiles = async (req, res) => {
   if (req.user.role !== 'recruiter') return res.status(403).json({ message: 'Only recruiters can discover talent' });
 
   try {
-    const profiles = await Profile.find().populate('user', 'name email');
+    const profiles = await Profile.find().select('-resumeData').populate('user', 'name email');
     res.json(profiles);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -60,7 +60,7 @@ const uploadProfileImage = async (req, res) => {
       { user: req.user.id },
       { $set: { profileImage } },
       { new: true, upsert: true }
-    );
+    ).select('-resumeData');
     
     res.json(profile);
   } catch (error) {
@@ -74,14 +74,27 @@ const uploadResume = async (req, res) => {
       return res.status(400).json({ message: 'No file uploaded' });
     }
     
+    const fs = require('fs');
+    const resumeBuffer = fs.readFileSync(req.file.path);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
-    const resumeUrl = `${baseUrl}/uploads/${req.file.filename}`;
+    const resumeUrl = `${baseUrl}/api/profiles/${req.user.id}/resume`;
     
     const profile = await Profile.findOneAndUpdate(
       { user: req.user.id },
-      { $set: { resumeUrl } },
+      { 
+        $set: { 
+          resumeUrl,
+          resumeData: {
+            data: resumeBuffer,
+            contentType: req.file.mimetype
+          }
+        } 
+      },
       { new: true, upsert: true }
-    );
+    ).select('-resumeData');
+    
+    // Clean up local file since it's now in DB
+    fs.unlinkSync(req.file.path);
     
     res.json(profile);
   } catch (error) {
@@ -89,30 +102,20 @@ const uploadResume = async (req, res) => {
   }
 };
 
-const downloadResume = async (req, res) => {
+const viewResume = async (req, res) => {
   try {
     const Profile = require('../models/Profile');
-    const profile = await Profile.findOne({ user: req.user.id });
-    if (!profile || !profile.resumeUrl) {
-      return res.status(404).json({ message: 'No resume found' });
+    const profile = await Profile.findOne({ user: req.params.userId });
+    
+    if (!profile || !profile.resumeData || !profile.resumeData.data) {
+      return res.status(404).send('Resume not found on server. The file might have been uploaded before the persistence patch.');
     }
     
-    const fileUrl = profile.resumeUrl;
-    const filename = fileUrl.split('/').pop();
-    const filePath = require('path').join(__dirname, '..', 'uploads', filename);
-
-    const fs = require('fs');
-    if (fs.existsSync(filePath)) {
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename="resume.pdf"');
-      const fileStream = fs.createReadStream(filePath);
-      fileStream.pipe(res);
-    } else {
-      res.status(404).json({ message: 'File not found on server' });
-    }
+    res.set('Content-Type', profile.resumeData.contentType);
+    res.send(profile.resumeData.data);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send('Server Error');
   }
 };
 
-module.exports = { getProfile, updateProfile, getAllProfiles, uploadProfileImage, uploadResume, downloadResume };
+module.exports = { getProfile, updateProfile, getAllProfiles, uploadProfileImage, uploadResume, viewResume };

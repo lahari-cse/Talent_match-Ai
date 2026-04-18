@@ -23,6 +23,10 @@ const profileSchema = new mongoose.Schema({
   },
   aiSummary: { type: String },
   resumeUrl: { type: String }, // Path to saved resume
+  resumeData: {
+    data: Buffer,
+    contentType: String
+  },
   profileImage: { type: String } // Path to saved profile image
 }, { timestamps: true });
 

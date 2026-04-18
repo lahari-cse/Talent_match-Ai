@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { getProfile, updateProfile, getAllProfiles, uploadProfileImage, uploadResume, downloadResume } = require('../controllers/profileController');
+const { getProfile, updateProfile, getAllProfiles, uploadProfileImage, uploadResume, viewResume } = require('../controllers/profileController');
 const { protect } = require('../middleware/authMiddleware');
 
 const fs = require('fs');
@@ -29,6 +29,6 @@ router.route('/')
 
 router.post('/upload-image', protect, upload.single('profileImage'), uploadProfileImage);
 router.post('/upload-resume', protect, upload.single('resume'), uploadResume);
-router.get('/download-resume', protect, downloadResume);
+router.get('/:userId/resume', viewResume);
 
 module.exports = router;
