@@ -21,7 +21,7 @@ const Landing = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
-          The AI-native talent platform that matches the world's best engineers with category-defining companies.
+          <strong>Talent_Match-Ai</strong> is the AI-native talent platform that matches the world's best engineers with category-defining companies.
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 pt-8">

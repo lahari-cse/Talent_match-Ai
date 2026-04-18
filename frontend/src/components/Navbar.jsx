@@ -42,7 +42,7 @@ const Navbar = () => {
         <div className="container mx-auto px-6 py-4 flex justify-between items-center text-zinc-100">
           <Link to="/" className="text-xl font-bold flex items-center gap-2 tracking-tight">
             <Briefcase className="w-6 h-6 text-blue-500" />
-            TalentMatch AI
+            Talent_Match-Ai
           </Link>
           
           <div className="flex items-center gap-4">
