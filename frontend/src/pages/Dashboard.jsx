@@ -91,27 +91,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleResumeDownload = async () => {
-    try {
-      const config = { 
-        headers: { Authorization: `Bearer ${user.token}` },
-        responseType: 'blob' 
-      };
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/profiles/download-resume`, config);
-      
-      const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'resume.pdf');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => window.URL.revokeObjectURL(url), 100);
-    } catch (err) {
-      console.error(err);
-      alert('Error downloading CV/Resume');
-    }
-  };
+
 
   if (!profile) return <div className="text-center mt-20">Loading profile...</div>;
 
@@ -137,9 +117,9 @@ const Dashboard = () => {
               </label>
             ) : (
               <div className="flex gap-2 w-64">
-                <button onClick={handleResumeDownload} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-blue-400 bg-blue-500/10 px-4 py-3 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-all">
+                <a href={profile.resumeUrl} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-blue-400 bg-blue-500/10 px-4 py-3 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-all">
                   <FileText className="w-4 h-4" /> View Resume
-                </button>
+                </a>
                 <button onClick={handleResumeRemove} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-red-400 bg-red-500/10 px-4 py-3 rounded-xl border border-red-500/20 hover:bg-red-500/20 transition-all">
                   <Trash2 className="w-4 h-4" /> Remove
                 </button>
