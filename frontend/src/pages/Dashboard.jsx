@@ -110,11 +110,18 @@ const Dashboard = () => {
           </div>
           
           <div className="flex flex-col items-center gap-4">
-            {!profile.resumeUrl ? (
-              <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-800 border border-zinc-500 px-6 py-3.5 rounded-xl flex items-center justify-center gap-3 text-zinc-200 text-sm font-bold transition-all shadow-lg hover:border-blue-500 w-64">
-                <Upload className="w-5 h-5 text-blue-400" /> Attach CV / Resume
-                <input type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} />
-              </label>
+            {!profile.resumeUrl || !profile.resumeUrl.includes('/api/profiles') ? (
+              <div className="flex flex-col items-center gap-2">
+                {profile.resumeUrl && (
+                  <div className="text-red-400 text-xs font-bold mb-2 bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20 text-center">
+                    Old resume link detected.<br/>Please attach it again to save to the database.
+                  </div>
+                )}
+                <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-800 border border-zinc-500 px-6 py-3.5 rounded-xl flex items-center justify-center gap-3 text-zinc-200 text-sm font-bold transition-all shadow-lg hover:border-blue-500 w-64">
+                  <Upload className="w-5 h-5 text-blue-400" /> Attach CV / Resume
+                  <input type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} />
+                </label>
+              </div>
             ) : (
               <div className="flex gap-2 w-64">
                 <a href={profile.resumeUrl} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-blue-400 bg-blue-500/10 px-4 py-3 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-all">

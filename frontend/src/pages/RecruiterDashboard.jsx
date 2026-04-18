@@ -273,10 +273,15 @@ const RecruiterDashboard = () => {
             <h2 className="text-3xl font-bold mb-2 tracking-tight">{viewingProfile.user?.name || 'Unknown Candidate'}</h2>
             <p className="text-zinc-400 text-lg mb-8">{viewingProfile.user?.email || 'No email available'}</p>
             
-            {viewingProfile.profile?.resumeUrl ? (
+            {viewingProfile.profile?.resumeUrl && viewingProfile.profile.resumeUrl.includes('/api/profiles') ? (
               <a href={viewingProfile.profile.resumeUrl} target="_blank" rel="noreferrer" className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg shadow-none">
                 <Briefcase className="w-5 h-5" /> View Attached Resume
               </a>
+            ) : viewingProfile.profile?.resumeUrl ? (
+              <div className="w-full bg-red-500/10 text-red-400 p-4 rounded-xl border border-red-500/20 text-sm font-bold flex flex-col items-center gap-2 text-center">
+                <span>Resume file was lost (Old System)</span>
+                <span className="text-xs text-red-300 font-medium">Please ask the candidate to remove and re-attach their resume.</span>
+              </div>
             ) : (
               <div className="w-full bg-zinc-800/50 text-zinc-400 p-4 rounded-xl border border-zinc-800/50 text-sm font-medium">
                 No resume attached
