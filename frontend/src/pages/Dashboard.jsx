@@ -134,14 +134,15 @@ const Dashboard = () => {
           </div>
           
           <div className="flex flex-col items-center gap-4">
-            <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-800 border border-zinc-500 px-6 py-3.5 rounded-xl flex items-center justify-center gap-3 text-zinc-200 text-sm font-bold transition-all shadow-lg hover:border-blue-500 w-64">
-              <Upload className="w-5 h-5 text-blue-400" /> Attach CV / Resume
-              <input type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} />
-            </label>
-            {profile.resumeUrl && (
+            {!profile.resumeUrl ? (
+              <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-800 border border-zinc-500 px-6 py-3.5 rounded-xl flex items-center justify-center gap-3 text-zinc-200 text-sm font-bold transition-all shadow-lg hover:border-blue-500 w-64">
+                <Upload className="w-5 h-5 text-blue-400" /> Attach CV / Resume
+                <input type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} />
+              </label>
+            ) : (
               <div className="flex gap-2 w-64">
                 <button onClick={handleResumeDownload} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-blue-400 bg-blue-500/10 px-4 py-3 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-all">
-                  <FileText className="w-4 h-4" /> Download
+                  <FileText className="w-4 h-4" /> View Resume
                 </button>
                 <button onClick={handleResumeRemove} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-red-400 bg-red-500/10 px-4 py-3 rounded-xl border border-red-500/20 hover:bg-red-500/20 transition-all">
                   <Trash2 className="w-4 h-4" /> Remove
