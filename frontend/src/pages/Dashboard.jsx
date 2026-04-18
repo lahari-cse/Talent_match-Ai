@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { User, Mail, Award, CheckCircle, Bell, AlertTriangle, Upload, FileText, Trash2 } from 'lucide-react';
@@ -28,7 +29,7 @@ const Dashboard = () => {
         }
 
         // Fetch jobs for notifications
-        if (profileRes.data && profileRes.data.skills) {
+        try {
           const jobsRes = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs`);
           // Only consider active jobs with a deadline that the user hasn't applied to yet
           const activeJobs = jobsRes.data.filter(j => j.isActive && j.deadline && !myAppJobIds.includes(j._id));
@@ -38,23 +39,19 @@ const Dashboard = () => {
           const tomorrow = new Date(now);
           tomorrow.setDate(tomorrow.getDate() + 2); // Within next 48 hours
           
-          const candidateSkills = (profileRes.data.skills || []).map(s => s.toLowerCase());
-
           activeJobs.forEach(job => {
             const jobDeadline = new Date(job.deadline);
             if (jobDeadline > now && jobDeadline <= tomorrow) {
-              // Check if candidate has at least one matching skill
-              const hasMatch = (job.requiredSkills || []).some(rs => candidateSkills.includes((rs || '').toLowerCase()));
-              if (hasMatch) {
-                newNotifications.push({
-                  id: job._id,
-                  message: `Tomorrow is the deadline for ${job.title} at ${job.company}, please apply!`,
-                  job: job
-                });
-              }
+              newNotifications.push({
+                id: job._id,
+                message: `Deadline approaching for ${job.title} at ${job.company}! Apply before ${jobDeadline.toLocaleDateString()}`,
+                job: job
+              });
             }
           });
           setNotifications(newNotifications);
+        } catch (e) {
+          console.error("Error fetching jobs for notifications", e);
         }
       } catch (error) {
         console.error("Error fetching dashboard data", error);
@@ -154,6 +151,33 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Notifications */}
+      {notifications.length > 0 && (
+        <div className="glass-card p-6 border-l-4 border-l-blue-500 relative">
+          <div className="flex items-center gap-3 mb-4">
+            <Bell className="w-5 h-5 text-blue-400" />
+            <h2 className="text-xl font-bold text-white tracking-tight">Notification Center</h2>
+            <span className="bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full text-xs font-bold">{notifications.length}</span>
+          </div>
+          <div className="space-y-3">
+            {notifications.map(note => (
+              <div key={note.id} className="bg-[#121212] p-4 rounded-xl border border-zinc-800 flex justify-between items-center hover:border-zinc-700 transition-colors shadow-sm">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-zinc-100 font-bold text-sm mb-1">{note.message}</h4>
+                    <p className="text-xs text-zinc-500 font-medium">Job: {note.job.title} • {note.job.company}</p>
+                  </div>
+                </div>
+                <Link to="/jobs" className="text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ml-4 border border-blue-500/20 hover:border-blue-500/40">
+                  View Job
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Application Tracking Kanban */}
       <div className="glass-card p-8">
