@@ -13,6 +13,7 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 - **AI Resume & CV Builder:** A fully dynamic, interactive builder that takes user inputs, utilizes AI to generate professional summary paragraphs, and exports natively to a styled PDF.
 - **Dual Dashboards:** Specialized, ultra-premium Dark Mode interfaces separated for both Candidates and Recruiters.
 - **Automated Screening:** Built-in tools for recruiters to instantly sort incoming applications by AI Match Score, saving hours of manual resume review.
+- **Career Coach Ai:**resolve queries of candidate and recuiters
 
 ---
 
@@ -81,5 +82,8 @@ npm run dev
 - **Frontend Hosting:** Vercel
 - **Backend Hosting:** Render
 - **Database Hosting:** MongoDB Atlas
+
+## Live Deployment Link
+- **https://talent-match-ai-one.vercel.app/
 
 > Built with ❤️ to revolutionize the job hunting experience.
