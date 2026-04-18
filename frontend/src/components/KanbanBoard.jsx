@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { PlayCircle } from 'lucide-react';
 
-const COLUMNS = ['Wishlist', 'Applied', 'Offer', 'Rejected'];
+const COLUMNS = ['Wishlist', 'Applied', 'Interviewing', 'Offer', 'Rejected'];
 
 const KanbanBoard = ({ initialApps }) => {
   const { user } = useContext(AuthContext);

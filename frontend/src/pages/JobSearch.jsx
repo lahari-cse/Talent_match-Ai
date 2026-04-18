@@ -18,6 +18,7 @@ const JobSearch = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [savedJobIds, setSavedJobIds] = useState([]);
+  const [myApplications, setMyApplications] = useState([]);
   const [uploadedResumeName, setUploadedResumeName] = useState('');
 
   useEffect(() => {
@@ -32,7 +33,8 @@ const JobSearch = () => {
         setJobs(jobsRes.data);
         if (profileRes.data) setProfile(profileRes.data);
         if (appsRes.data) {
-          setSavedJobIds(appsRes.data.map(app => app.job?._id || app.job));
+          setMyApplications(appsRes.data);
+          setSavedJobIds(appsRes.data.filter(a => a.status === 'Saved').map(app => app.job?._id || app.job));
         }
       } catch (error) { console.error(error); }
     };
@@ -69,11 +71,16 @@ const JobSearch = () => {
       const scoreData = matchScores[jobId];
       const coverLetterData = coverLetters[jobId];
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs/${jobId}/apply`, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs/${jobId}/apply`, {
         aiMatchScore: scoreData?.score || 0,
         aiGapAnalysis: scoreData?.gap || '',
         coverLetter: coverLetterData?.text || ''
       }, config);
+      setMyApplications(prev => {
+        const exists = prev.find(a => a._id === data._id);
+        if (exists) return prev.map(a => a._id === data._id ? data : a);
+        return [...prev, data];
+      });
       setPopupMessage('You have successfully registered.');
       setShowSuccessPopup(true);
       setTimeout(() => setShowSuccessPopup(false), 3000);
@@ -99,9 +106,10 @@ const JobSearch = () => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs/${jobId}/apply`, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs/${jobId}/apply`, {
         status: 'Saved'
       }, config);
+      setMyApplications(prev => [...prev, data]);
       setSavedJobIds(prev => [...prev, jobId]);
       setPopupMessage('Job added to your Wishlist!');
       setShowSuccessPopup(true);
@@ -238,9 +246,21 @@ const JobSearch = () => {
                   <button onClick={() => handleSaveJob(job._id)} className="bg-zinc-800 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 p-2.5 rounded-xl transition-colors">
                     <Heart className={`w-5 h-5 ${savedJobIds.includes(job._id) ? 'fill-rose-500 text-rose-500' : 'text-rose-400'}`} />
                   </button>
-                  <button onClick={() => handleApply(job._id)} className="flex-1 bg-zinc-800 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 py-2.5 rounded-xl text-sm font-bold transition-colors">
-                    Quick Apply
-                  </button>
+                  {(() => {
+                    const existingApp = myApplications.find(a => (a.job?._id || a.job) === job._id && a.status !== 'Saved');
+                    if (existingApp) {
+                      return (
+                        <div className="flex-1 bg-zinc-800/50 border border-zinc-800 text-zinc-400 py-2.5 rounded-xl text-sm font-bold text-center opacity-70">
+                          Status: {existingApp.status}
+                        </div>
+                      );
+                    }
+                    return (
+                      <button onClick={() => handleApply(job._id)} className="flex-1 bg-zinc-800 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 py-2.5 rounded-xl text-sm font-bold transition-colors">
+                        Quick Apply
+                      </button>
+                    );
+                  })()}
                 </div>
               </div>
             ))}
@@ -282,9 +302,21 @@ const JobSearch = () => {
                       <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
                         <Sparkles className="w-4 h-4" /> {matchScores[job._id].score}% AI Match
                       </div>
-                      <button onClick={() => handleApply(job._id)} className="bg-blue-600 hover:bg-blue-500 text-white border-none px-5 py-2 rounded-lg text-sm font-bold transition-colors">
-                        Apply Now
-                      </button>
+                      {(() => {
+                        const existingApp = myApplications.find(a => (a.job?._id || a.job) === job._id && a.status !== 'Saved');
+                        if (existingApp) {
+                          return (
+                            <div className="bg-zinc-800/50 text-zinc-400 border border-zinc-800 px-5 py-2 rounded-lg text-sm font-bold opacity-70">
+                              Status: {existingApp.status}
+                            </div>
+                          );
+                        }
+                        return (
+                          <button onClick={() => handleApply(job._id)} className="bg-blue-600 hover:bg-blue-500 text-white border-none px-5 py-2 rounded-lg text-sm font-bold transition-colors">
+                            Apply Now
+                          </button>
+                        );
+                      })()}
                     </div>
                     {matchScores[job._id].gap && (
                       <p className="text-xs text-zinc-400 bg-[#121212]/50 p-3 rounded-lg border border-zinc-800">
@@ -319,9 +351,21 @@ const JobSearch = () => {
                     <button onClick={() => handleSaveJob(job._id)} className="bg-zinc-800 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 p-2 rounded-lg transition-colors">
                       <Heart className={`w-4 h-4 ${savedJobIds.includes(job._id) ? 'fill-rose-500 text-rose-500' : 'text-rose-400'}`} />
                     </button>
-                    <button onClick={() => handleApply(job._id)} className="glass-button px-5 py-2 rounded-lg text-sm">
-                      Quick Apply
-                    </button>
+                    {(() => {
+                      const existingApp = myApplications.find(a => (a.job?._id || a.job) === job._id && a.status !== 'Saved');
+                      if (existingApp) {
+                        return (
+                          <div className="bg-zinc-800/50 text-zinc-400 border border-zinc-800 px-5 py-2 rounded-lg text-sm font-bold opacity-70 flex items-center justify-center">
+                            Status: {existingApp.status}
+                          </div>
+                        );
+                      }
+                      return (
+                        <button onClick={() => handleApply(job._id)} className="glass-button px-5 py-2 rounded-lg text-sm">
+                          Quick Apply
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
               )}
