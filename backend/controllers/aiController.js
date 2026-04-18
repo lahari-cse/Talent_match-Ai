@@ -67,7 +67,9 @@ const calculateMatchScore = async (req, res) => {
       response_format: { type: "json_object" },
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    let content = response.choices[0].message.content;
+    content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+    const result = JSON.parse(content);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -103,7 +105,9 @@ const parseResume = async (req, res) => {
       response_format: { type: "json_object" },
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    let content = response.choices[0].message.content;
+    content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+    const result = JSON.parse(content);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -249,7 +253,9 @@ const mockInterview = async (req, res) => {
       response_format: { type: "json_object" }
     });
 
-    const result = JSON.parse(response.choices[0].message.content);
+    let content = response.choices[0].message.content;
+    content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+    const result = JSON.parse(content);
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
