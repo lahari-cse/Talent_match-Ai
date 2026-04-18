@@ -11,20 +11,8 @@ const Navbar = () => {
   const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (user && user.role === 'candidate') {
-        try {
-          const config = { headers: { Authorization: `Bearer ${user.token}` } };
-          const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/profiles`, config);
-          if (res.data && res.data.profileImage) {
-            setProfileImage(res.data.profileImage);
-          }
-        } catch (err) {
-          console.error('Error fetching profile image:', err);
-        }
-      }
-    };
-    fetchProfile();
+    // Kept empty useEffect to avoid disrupting any hook order if it matters, though it doesn't here.
+    // Removed profile image fetch as per user request
   }, [user, isSidebarOpen]);
 
   const handleLogout = () => {
@@ -79,11 +67,7 @@ const Navbar = () => {
             <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700">
-                  {profileImage ? (
-                    <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
-                  ) : (
-                    <User className="w-5 h-5 text-zinc-400" />
-                  )}
+                  <User className="w-5 h-5 text-zinc-400" />
                 </div>
                 <div>
                   <p className="font-bold text-zinc-100">{user.name}</p>

@@ -120,11 +120,7 @@ const Dashboard = () => {
       {/* Profile Header */}
       <div className="glass-card p-10 flex flex-col items-center text-center gap-6">
         <div className="w-48 h-48 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 border-4 border-zinc-800 shadow-sm overflow-hidden">
-          {profile.profileImage ? (
-            <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
-          ) : (
-            <User className="w-24 h-24" />
-          )}
+          <User className="w-24 h-24" />
         </div>
         
         <div>
@@ -154,13 +150,14 @@ const Dashboard = () => {
       </div>
 
       {/* Notifications */}
-      {notifications.length > 0 && (
-        <div className="glass-card p-6 border-l-4 border-l-blue-500 relative">
-          <div className="flex items-center gap-3 mb-4">
-            <Bell className="w-5 h-5 text-blue-400" />
-            <h2 className="text-xl font-bold text-white tracking-tight">Notification Center</h2>
-            <span className="bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full text-xs font-bold">{notifications.length}</span>
-          </div>
+      <div className="glass-card p-6 border-l-4 border-l-blue-500 relative">
+        <div className="flex items-center gap-3 mb-4">
+          <Bell className="w-5 h-5 text-blue-400" />
+          <h2 className="text-xl font-bold text-white tracking-tight">Notification Center</h2>
+          {notifications.length > 0 && <span className="bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full text-xs font-bold">{notifications.length}</span>}
+        </div>
+        
+        {notifications.length > 0 ? (
           <div className="space-y-3">
             {notifications.map(note => (
               <div key={note.id} className="bg-[#121212] p-4 rounded-xl border border-zinc-800 flex justify-between items-center hover:border-zinc-700 transition-colors shadow-sm">
@@ -177,8 +174,12 @@ const Dashboard = () => {
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="bg-[#121212] p-6 rounded-xl border border-zinc-800 text-center text-zinc-400 shadow-sm">
+            You have no new notifications.
+          </div>
+        )}
+      </div>
 
       {/* Application Tracking Kanban */}
       <div className="glass-card p-8">

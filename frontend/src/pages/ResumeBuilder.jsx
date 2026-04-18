@@ -233,26 +233,6 @@ const ResumeBuilder = () => {
 
 
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('profileImage', file);
-      const config = { headers: { Authorization: `Bearer ${user.token}`, 'Content-Type': 'multipart/form-data' } };
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/profiles/upload-image`, formData, config);
-      if (res.data && res.data.profileImage) {
-        setData(prev => ({ ...prev, profileImage: res.data.profileImage }));
-        alert('Profile picture uploaded successfully!');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error uploading image');
-    }
-    setLoading(false);
-  };
-
 
 
   const handleEnhance = async () => {
@@ -318,19 +298,9 @@ const ResumeBuilder = () => {
             
             {/* Personal Info Section */}
             <section className="bg-black p-6 rounded-xl border border-zinc-800">
-              <div className="flex items-center justify-between mb-4">
+              <div className="mb-4">
                 <h3 className="text-lg font-bold text-zinc-100">Personal Information</h3>
-                <label className="cursor-pointer bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 px-3 py-1.5 rounded-lg flex items-center gap-2 text-zinc-300 text-xs font-bold transition-colors">
-                  <Camera className="w-3 h-3" /> {data.profileImage ? 'Change Photo' : 'Upload Photo'}
-                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                </label>
               </div>
-              
-              {data.profileImage && (
-                <div className="mb-4 flex justify-center">
-                  <img src={data.profileImage} alt="Profile" className="w-24 h-24 rounded-full object-cover border-4 border-zinc-800 shadow-sm" />
-                </div>
-              )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
@@ -527,9 +497,6 @@ const ResumeBuilder = () => {
                   {data.links?.portfolio && <span>Portfolio: {data.links.portfolio}</span>}
                 </div>
               </div>
-              {data.profileImage && (
-                <img src={data.profileImage} alt="Profile" className="w-24 h-24 rounded object-cover border border-zinc-200" />
-              )}
             </div>
             
             {data.aiSummary && (

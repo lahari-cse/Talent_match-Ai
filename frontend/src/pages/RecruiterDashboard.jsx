@@ -267,11 +267,7 @@ const RecruiterDashboard = () => {
             </button>
             
             <div className="w-32 h-32 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 border-4 border-zinc-800 shadow-sm overflow-hidden mb-6">
-              {viewingProfile.profile?.profileImage ? (
-                <img src={viewingProfile.profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <Users className="w-16 h-16" />
-              )}
+              <Users className="w-16 h-16" />
             </div>
             
             <h2 className="text-3xl font-bold mb-2 tracking-tight">{viewingProfile.user?.name || 'Unknown Candidate'}</h2>
@@ -330,11 +326,7 @@ const RecruiterDashboard = () => {
               <div key={profile._id} className="bg-[#121212] border border-zinc-800 p-6 rounded-3xl flex flex-col hover:border-zinc-800 transition-colors shadow-lg">
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xl text-blue-400 border border-zinc-700 overflow-hidden">
-                    {profile.profileImage ? (
-                      <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
-                    ) : (
-                      profile.user?.name?.charAt(0) || 'U'
-                    )}
+                    {profile.user?.name?.charAt(0) || 'U'}
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-white tracking-tight">{profile.user?.name}</h3>
