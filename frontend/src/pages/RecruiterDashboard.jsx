@@ -11,6 +11,7 @@ const RecruiterDashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState('jobs'); // 'jobs' or 'talent'
   const [talentSearch, setTalentSearch] = useState('');
+  const [searchFilter, setSearchFilter] = useState('All');
   const [selectedJob, setSelectedJob] = useState(null);
   const [applicants, setApplicants] = useState([]);
   const [viewingProfile, setViewingProfile] = useState(null);
@@ -162,59 +163,7 @@ const RecruiterDashboard = () => {
         </div>
       )}
 
-      {activeTab === 'talent' && (
-        <div className="animate-in fade-in slide-in-from-bottom-4">
-          <div className="relative max-w-xl mx-auto mb-10">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search talent by name, email, or skills..." 
-              value={talentSearch}
-              onChange={(e) => setTalentSearch(e.target.value)}
-              className="w-full bg-[#121212] border border-zinc-800 focus:border-blue-500 rounded-full py-4 pl-12 pr-6 text-zinc-200 outline-none transition-all shadow-lg text-sm"
-            />
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(profiles || []).filter(p => {
-              const search = (talentSearch || '').toLowerCase();
-              const nameMatch = (p?.user?.name || '').toLowerCase().includes(search);
-              const emailMatch = (p?.user?.email || '').toLowerCase().includes(search);
-              const skillsMatch = Array.isArray(p?.skills) ? p.skills.some(s => (s || '').toLowerCase().includes(search)) : false;
-              return nameMatch || emailMatch || skillsMatch;
-            }).map(profile => (
-            <div key={profile._id} className="bg-[#121212] border border-zinc-800 p-8 rounded-3xl flex flex-col items-center text-center hover:border-zinc-800 hover:-translate-y-1 transition-all shadow-sm">
-              <div className="w-24 h-24 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 border-4 border-zinc-800 shadow-sm overflow-hidden mb-5">
-                {profile.profileImage ? (
-                  <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <Users className="w-12 h-12" />
-                )}
-              </div>
-              <h3 className="font-bold text-xl text-white tracking-tight mb-1">{profile.user?.name || 'Unknown Candidate'}</h3>
-              <p className="text-zinc-400 text-sm font-medium mb-6">{profile.user?.email}</p>
-              
-              <button 
-                onClick={() => setViewingProfile({ user: profile.user, profile: profile })}
-                className="w-full mt-auto glass-button py-3 rounded-xl text-sm font-bold"
-              >
-                View Profile
-              </button>
-            </div>
-          ))}
-            {(profiles || []).filter(p => {
-              const search = (talentSearch || '').toLowerCase();
-              const nameMatch = (p?.user?.name || '').toLowerCase().includes(search);
-              const emailMatch = (p?.user?.email || '').toLowerCase().includes(search);
-              const skillsMatch = Array.isArray(p?.skills) ? p.skills.some(s => (s || '').toLowerCase().includes(search)) : false;
-              return nameMatch || emailMatch || skillsMatch;
-            }).length === 0 && (
-              <div className="col-span-full text-center py-20 text-zinc-500 bg-[#121212]/50 border border-zinc-800 rounded-3xl border-dashed">
-                {talentSearch ? 'No talent found matching your search.' : 'No talent profiles available to discover yet.'}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
 
       {selectedJob && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -343,22 +292,49 @@ const RecruiterDashboard = () => {
 
       {activeTab === 'talent' && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
-          <div className="relative">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-4 top-4 text-zinc-500"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input 
-              type="text" 
-              placeholder="Search candidates by skill (e.g. React, Python)..." 
-              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#121212] border border-zinc-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-zinc-200 transition-all shadow-sm"
-              value={talentSearch}
-              onChange={e => setTalentSearch(e.target.value)}
-            />
+          <div className="relative flex gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 w-5 h-5" />
+              <input 
+                type="text" 
+                placeholder={`Search candidates by ${searchFilter === 'All' ? 'name, email, or skills' : searchFilter.toLowerCase()}...`} 
+                className="w-full pl-12 pr-4 py-4 rounded-xl bg-[#121212] border border-zinc-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-zinc-200 transition-all shadow-sm"
+                value={talentSearch}
+                onChange={e => setTalentSearch(e.target.value)}
+              />
+            </div>
+            <select 
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              className="bg-[#121212] border border-zinc-800 text-zinc-200 py-4 px-4 rounded-xl outline-none focus:border-blue-500 transition-all"
+            >
+              <option value="All">All Fields</option>
+              <option value="Name">Name</option>
+              <option value="Email">Email</option>
+              <option value="Skills">Skills</option>
+            </select>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {profiles.filter(p => !talentSearch || p.skills.some(s => s.toLowerCase().includes(talentSearch.toLowerCase()))).map(profile => (
+            {profiles.filter(p => {
+              if (!talentSearch) return true;
+              const search = talentSearch.toLowerCase();
+              const nameMatch = (p.user?.name || '').toLowerCase().includes(search);
+              const emailMatch = (p.user?.email || '').toLowerCase().includes(search);
+              const skillsMatch = (p.skills || []).some(s => s.toLowerCase().includes(search));
+              
+              if (searchFilter === 'Name') return nameMatch;
+              if (searchFilter === 'Email') return emailMatch;
+              if (searchFilter === 'Skills') return skillsMatch;
+              return nameMatch || emailMatch || skillsMatch;
+            }).map(profile => (
               <div key={profile._id} className="bg-[#121212] border border-zinc-800 p-6 rounded-3xl flex flex-col hover:border-zinc-800 transition-colors shadow-lg">
                 <div className="flex items-center gap-4 mb-5">
-                  <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center font-bold text-xl text-blue-400">
-                    {profile.user?.name?.charAt(0)}
+                  <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xl text-blue-400 border border-zinc-700 overflow-hidden">
+                    {profile.profileImage ? (
+                      <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      profile.user?.name?.charAt(0) || 'U'
+                    )}
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-white tracking-tight">{profile.user?.name}</h3>
