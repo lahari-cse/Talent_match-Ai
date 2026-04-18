@@ -2,10 +2,11 @@ const Profile = require('../models/Profile');
 
 const getProfile = async (req, res) => {
   try {
-    let profile = await Profile.findOne({ user: req.user.id });
-    if (!profile) {
-      profile = await Profile.create({ user: req.user.id });
-    }
+    const profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $setOnInsert: { user: req.user.id } },
+      { new: true, upsert: true }
+    );
     res.json(profile);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -14,22 +15,22 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    let profile = await Profile.findOne({ user: req.user.id });
-    if (!profile) {
-      profile = new Profile({ user: req.user.id });
-    }
-    
-    // Update fields
     const { phone, skills, education, experience, links, aiSummary, resumeUrl } = req.body;
-    if (phone) profile.phone = phone;
-    if (skills) profile.skills = skills;
-    if (education) profile.education = education;
-    if (experience) profile.experience = experience;
-    if (links) profile.links = links;
-    if (aiSummary) profile.aiSummary = aiSummary;
-    if (resumeUrl !== undefined) profile.resumeUrl = resumeUrl;
+    const updateData = {};
+    if (phone !== undefined) updateData.phone = phone;
+    if (skills !== undefined) updateData.skills = skills;
+    if (education !== undefined) updateData.education = education;
+    if (experience !== undefined) updateData.experience = experience;
+    if (links !== undefined) updateData.links = links;
+    if (aiSummary !== undefined) updateData.aiSummary = aiSummary;
+    if (resumeUrl !== undefined) updateData.resumeUrl = resumeUrl;
 
-    await profile.save();
+    const profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: updateData },
+      { new: true, upsert: true }
+    );
+
     res.json(profile);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -52,15 +53,14 @@ const uploadProfileImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    let profile = await Profile.findOne({ user: req.user.id });
-    if (!profile) {
-      profile = new Profile({ user: req.user.id });
-    }
-    
-    // Construct the URL to access the uploaded file dynamically
     const baseUrl = `${req.protocol}://${req.get('host')}`;
-    profile.profileImage = `${baseUrl}/uploads/${req.file.filename}`;
-    await profile.save();
+    const profileImage = `${baseUrl}/uploads/${req.file.filename}`;
+    
+    const profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: { profileImage } },
+      { new: true, upsert: true }
+    );
     
     res.json(profile);
   } catch (error) {
@@ -73,15 +73,15 @@ const uploadResume = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    let profile = await Profile.findOne({ user: req.user.id });
-    if (!profile) {
-      profile = new Profile({ user: req.user.id });
-    }
     
-    // Construct the URL to access the uploaded file dynamically
     const baseUrl = `${req.protocol}://${req.get('host')}`;
-    profile.resumeUrl = `${baseUrl}/uploads/${req.file.filename}`;
-    await profile.save();
+    const resumeUrl = `${baseUrl}/uploads/${req.file.filename}`;
+    
+    const profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: { resumeUrl } },
+      { new: true, upsert: true }
+    );
     
     res.json(profile);
   } catch (error) {
