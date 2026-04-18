@@ -60,6 +60,16 @@ const RecruiterDashboard = () => {
     }
   };
 
+  const handleUpdateStatus = async (applicationId, status) => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/jobs/applications/${applicationId}/status`, { status }, config);
+      setApplicants(applicants.map(app => app._id === applicationId ? { ...app, status } : app));
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex justify-between items-center text-white">
@@ -247,6 +257,19 @@ const RecruiterDashboard = () => {
                         <span className="font-bold text-yellow-500 block mb-1">AI Gap Analysis:</span> {app.aiGapAnalysis}
                       </div>
                     )}
+                    
+                    {/* Status Badge */}
+                    <div className="mt-4 flex items-center gap-3">
+                      <span className="text-sm font-bold text-zinc-500 uppercase">Status:</span>
+                      <span className={`px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full border ${
+                        app.status === 'Interviewing' || app.status === 'Offer' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                        app.status === 'Rejected' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                        'bg-zinc-500/10 text-zinc-400 border-zinc-500/20'
+                      }`}>
+                        {app.status || 'Applied'}
+                      </span>
+                    </div>
+
                   </div>
                   <div className="md:w-48 flex flex-col justify-center gap-3">
                     {app.profile ? (
@@ -258,6 +281,23 @@ const RecruiterDashboard = () => {
                       </button>
                     ) : (
                       <span className="text-xs text-zinc-500 italic text-center">No profile provided</span>
+                    )}
+
+                    {(!app.status || app.status === 'Applied') && (
+                      <div className="flex gap-2 w-full mt-2">
+                        <button 
+                          onClick={() => handleUpdateStatus(app._id, 'Interviewing')}
+                          className="flex-1 py-2 text-xs font-bold bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white border border-emerald-500/20 hover:border-emerald-500 rounded-xl transition-all"
+                        >
+                          Approve
+                        </button>
+                        <button 
+                          onClick={() => handleUpdateStatus(app._id, 'Rejected')}
+                          className="flex-1 py-2 text-xs font-bold bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white border border-red-500/20 hover:border-red-500 rounded-xl transition-all"
+                        >
+                          Reject
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
