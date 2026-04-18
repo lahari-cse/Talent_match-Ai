@@ -57,8 +57,9 @@ const uploadProfileImage = async (req, res) => {
       profile = new Profile({ user: req.user.id });
     }
     
-    // Construct the URL to access the uploaded file
-    profile.profileImage = `http://localhost:5000/uploads/${req.file.filename}`;
+    // Construct the URL to access the uploaded file dynamically
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    profile.profileImage = `${baseUrl}/uploads/${req.file.filename}`;
     await profile.save();
     
     res.json(profile);
@@ -77,9 +78,9 @@ const uploadResume = async (req, res) => {
       profile = new Profile({ user: req.user.id });
     }
     
-    // Construct the URL to access the uploaded file
-    // Ideally use process.env.API_URL for production
-    profile.resumeUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    // Construct the URL to access the uploaded file dynamically
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    profile.resumeUrl = `${baseUrl}/uploads/${req.file.filename}`;
     await profile.save();
     
     res.json(profile);
