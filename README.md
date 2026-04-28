@@ -85,5 +85,3 @@ npm run dev
 
 ## Live Deployment Link
 - **https://talent-match-ai-one.vercel.app/
-
-> Built with ❤️ to revolutionize the job hunting experience.
