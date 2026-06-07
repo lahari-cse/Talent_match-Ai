@@ -17,7 +17,7 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 
 ---
 
-## Additional Features
+## 💫 Additional Features
 
 - **Smart Deadline Notifications:** Candidates receive alerts when job application deadlines are near.
 - **AI Mock Interview:** Practice job-specific interview questions before applying.
