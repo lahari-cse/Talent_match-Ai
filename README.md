@@ -19,12 +19,12 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 
 ## Additional Features
 
-- Smart Deadline Notifications: Candidates receive alerts when job application deadlines are near.
-- AI Mock Interview: Practice job-specific interview questions before applying.
-- Save Jobs: Bookmark jobs and access them later from the dashboard.
-- AI Resume Matching: AI analyzes resumes and recommends suitable jobs.
-- Application Tracking: Monitor application status throughout the hiring process.
-- Recruiter Dashboard: Manage jobs and review AI-ranked candidates.
+- **Smart Deadline Notifications:** Candidates receive alerts when job application deadlines are near.
+- **AI Mock Interview:** Practice job-specific interview questions before applying.
+- **Save Jobs:** Bookmark jobs and access them later from the dashboard.
+- **AI Resume Matching:** AI analyzes resumes and recommends suitable jobs.
+- **Application Tracking:** Monitor application status throughout the hiring process.
+- **Recruiter Dashboard:** Manage jobs and review AI-ranked candidates.
 
 ---
 
