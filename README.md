@@ -78,18 +78,6 @@ Hire Top Talent
 
 ---
 
-## 🌟 Future Enhancements
-
-- Video-based AI interviews
-- Skill assessment tests
-- Real-time recruiter-candidate chat
-- Job recommendation engine
-- Advanced analytics dashboard
-- Email and mobile push notifications
-- Multi-language support
-
----
-
 ## 💻 Technology Stack
 
 **Frontend:**
@@ -148,6 +136,18 @@ Start the frontend server:
 ```bash
 npm run dev
 ```
+
+---
+
+## 🌟 Future Enhancements
+
+- Video-based AI interviews
+- Skill assessment tests
+- Real-time recruiter-candidate chat
+- Job recommendation engine
+- Advanced analytics dashboard
+- Email and mobile push notifications
+- Multi-language support
 
 ---
 
