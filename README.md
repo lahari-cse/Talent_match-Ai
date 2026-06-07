@@ -13,7 +13,18 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 - **AI Resume & CV Builder:** A fully dynamic, interactive builder that takes user inputs, utilizes AI to generate professional summary paragraphs, and exports natively to a styled PDF.
 - **Dual Dashboards:** Specialized, ultra-premium Dark Mode interfaces separated for both Candidates and Recruiters.
 - **Automated Screening:** Built-in tools for recruiters to instantly sort incoming applications by AI Match Score, saving hours of manual resume review.
-- **Career Coach Ai:**resolve queries of candidate and recuiters
+- **Career Coach Ai:** resolve queries of candidate and recuiters
+
+---
+
+## Additional Features
+
+- 🔔 Smart Deadline Notifications: Candidates receive alerts when job application deadlines are near.
+- 🎤 AI Mock Interview: Practice job-specific interview questions before applying.
+- 💾 Save Jobs: Bookmark jobs and access them later from the dashboard.
+- 🤖 AI Resume Matching: AI analyzes resumes and recommends suitable jobs.
+- 📈 Application Tracking: Monitor application status throughout the hiring process.
+- 👨‍💼 Recruiter Dashboard: Manage jobs and review AI-ranked candidates.
 
 ---
 
@@ -30,6 +41,68 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 - MongoDB & Mongoose (NoSQL Database)
 - JSON Web Tokens (JWT) for secure authentication
 - OpenRouter API (LLM Integration for NLP tasks)
+
+---
+
+## 🔄 How It Works
+
+### 👩‍💼 Candidate Workflow
+
+```text
+Sign Up
+   ↓
+Create Profile
+   ↓
+Upload Resume
+   ↓
+AI Resume Analysis
+   ↓
+View AI-Matched Jobs
+   ↓
+Save Jobs / Apply for Jobs
+   ↓
+Receive Deadline Notifications
+   ↓
+Take AI Mock Interview
+   ↓
+Get AI Feedback
+   ↓
+Submit Application
+   ↓
+Track Application Status
+```
+
+### 🏢 Recruiter Workflow
+
+```text
+Sign Up
+   ↓
+Create Company Profile
+   ↓
+Post Job Openings
+   ↓
+AI Candidate Matching
+   ↓
+Review Ranked Candidates
+   ↓
+Shortlist Applicants
+   ↓
+Schedule Interviews
+   ↓
+Hire Top Talent
+```
+
+---
+
+## 🌟 Future Enhancements
+
+- 🎥 Video-based AI interviews
+- 📝 Skill assessment tests
+- 💬 Real-time recruiter-candidate chat
+- 🎯 Job recommendation engine
+- 📊 Advanced analytics dashboard
+- 📧 Email and mobile push notifications
+- 🌍 Multi-language support
 
 ---
 
