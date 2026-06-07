@@ -9,10 +9,15 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 ## ✨ Key Features
 
 - **Intelligent Job Matching:** Uses an AI matching algorithm to compare a candidate's actual experience and skills with active job postings, generating an instant compatibility score.
-- **AI Gap Analysis:** Acts as a career mentor by telling candidates exactly what skills they are missing for specific job roles so they can upskill efficiently.
+
+- **AI Learning Recommendations:** This feature helps candidates prepare for their target job role. Users enter the job they want to apply for, and the AI generates a preparation guide explaining what skills and technologies they should learn. It also recommends relevant courses and provides direct search links to find those courses on learning platforms, making the preparation process faster and easier.
+
 - **AI Resume & CV Builder:** A fully dynamic, interactive builder that takes user inputs, utilizes AI to generate professional summary paragraphs, and exports natively to a styled PDF.
+
 - **Dual Dashboards:** Specialized, ultra-premium Dark Mode interfaces separated for both Candidates and Recruiters.
+
 - **Automated Screening:** Built-in tools for recruiters to instantly sort incoming applications by AI Match Score, saving hours of manual resume review.
+
 - **Career Coach Ai:** resolve queries of candidate and recuiters
 
 ---
@@ -20,10 +25,15 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 ## 💫 Additional Features
 
 - **Smart Deadline Notifications:** Candidates receive alerts when job application deadlines are near.
+
 - **AI Mock Interview:** Practice job-specific interview questions before applying.
+
 - **Save Jobs:** Bookmark jobs and access them later from the dashboard.
+
 - **AI Resume Matching:** AI analyzes resumes and recommends suitable jobs.
+
 - **Application Tracking:** Monitor application status throughout the hiring process.
+
 - **Recruiter Dashboard:** Manage jobs and review AI-ranked candidates.
 
 ---
