@@ -19,28 +19,12 @@ TalentMatch AI is an enterprise-grade, full-stack application built to seamlessl
 
 ## Additional Features
 
-- 🔔 Smart Deadline Notifications: Candidates receive alerts when job application deadlines are near.
-- 🎤 AI Mock Interview: Practice job-specific interview questions before applying.
-- 💾 Save Jobs: Bookmark jobs and access them later from the dashboard.
-- 🤖 AI Resume Matching: AI analyzes resumes and recommends suitable jobs.
-- 📈 Application Tracking: Monitor application status throughout the hiring process.
-- 👨‍💼 Recruiter Dashboard: Manage jobs and review AI-ranked candidates.
-
----
-
-## 💻 Technology Stack
-
-**Frontend:**
-- React.js + Vite
-- TailwindCSS (Premium Zinc/Black Dark Mode Aesthetic)
-- `@react-pdf/renderer` (Client-side PDF generation)
-- Axios & React Router
-
-**Backend:**
-- Node.js & Express.js
-- MongoDB & Mongoose (NoSQL Database)
-- JSON Web Tokens (JWT) for secure authentication
-- OpenRouter API (LLM Integration for NLP tasks)
+- Smart Deadline Notifications: Candidates receive alerts when job application deadlines are near.
+- AI Mock Interview: Practice job-specific interview questions before applying.
+- Save Jobs: Bookmark jobs and access them later from the dashboard.
+- AI Resume Matching: AI analyzes resumes and recommends suitable jobs.
+- Application Tracking: Monitor application status throughout the hiring process.
+- Recruiter Dashboard: Manage jobs and review AI-ranked candidates.
 
 ---
 
@@ -96,13 +80,29 @@ Hire Top Talent
 
 ## 🌟 Future Enhancements
 
-- 🎥 Video-based AI interviews
-- 📝 Skill assessment tests
-- 💬 Real-time recruiter-candidate chat
-- 🎯 Job recommendation engine
-- 📊 Advanced analytics dashboard
-- 📧 Email and mobile push notifications
-- 🌍 Multi-language support
+- Video-based AI interviews
+- Skill assessment tests
+- Real-time recruiter-candidate chat
+- Job recommendation engine
+- Advanced analytics dashboard
+- Email and mobile push notifications
+- Multi-language support
+
+---
+
+## 💻 Technology Stack
+
+**Frontend:**
+- React.js + Vite
+- TailwindCSS (Premium Zinc/Black Dark Mode Aesthetic)
+- `@react-pdf/renderer` (Client-side PDF generation)
+- Axios & React Router
+
+**Backend:**
+- Node.js & Express.js
+- MongoDB & Mongoose (NoSQL Database)
+- JSON Web Tokens (JWT) for secure authentication
+- OpenRouter API (LLM Integration for NLP tasks)
 
 ---
 
